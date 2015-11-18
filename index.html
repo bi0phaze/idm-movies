@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>backbone introductioon</title>
+  <link rel="stylesheet" href="style.css">
+<!-- template here -->
+<script type= "html/template" id = "movieTmpl" charset="utf-8">
+   <h4> <%= title %> </h4>
+   <img src = "<%= image %>" />
+   <p> <%= plot %> </p>
+   <h6> <%= released %> </h6>
+ </script>
+
+
+</head>
+<body>
+  <header>
+    <h1>IMD MOVIES</h1>
+
+  <section class="container">
+  <div>
+    <input type="text" name="title" value="">
+    <input type="text" name="url" value="">
+    <input type="text" name="plot" value="">
+    <input type="text" name="=released" value="">
+    <input type="text" name="rating" value="">
+  </div>
+    <button type="button" name="button">Add Movie</button>
+  </section>
+
+  </header>
+
+  <section>
+
+  </section>
+  <script src="bundle.js" charset="utf-8"></script>
+</body>
+</html>
