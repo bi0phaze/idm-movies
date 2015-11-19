@@ -11,4 +11,40 @@ h1 {
 input {
   height: 28px;
   width: 17%;
-  margin-left: 2%; }
+  margin-left: 2%;
+  font-size: 18px; }
+
+button {
+  width: 18%;
+  height: 37px;
+  margin-left: 41%;
+  margin-top: 2%;
+  font-family: fantasy;
+  font-size: 21px; }
+
+header {
+  background-color: gray;
+  border-bottom: 4px solid black;
+  border-radius: 2%; }
+
+img {
+  width: 200px;
+  height: 200px;
+  display: inline-block;
+  margin-left: 6%; }
+
+p {
+  width: 70%;
+  float: right;
+  display: inline-block;
+  height: 100px;
+  background: gray; }
+
+h3 {
+  float: right; }
+
+h2 {
+  float: right; }
+
+h4 {
+  margin-left: 11%; }

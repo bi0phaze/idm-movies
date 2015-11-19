@@ -2,20 +2,16 @@
 var Backbone = require('backbone');
 var _ = require('underscore');
 var $ = require('jquery');
-var movieView = require('./imdModelView');
-var movieModel = require('./itemModel');
+var MovieView = require('./imdModelView');
+var ItemModel = require('./itemModel');
 Backbone.$ = $;
 
 
 module.exports = Backbone.View.extend({
   el: '.body',
   events: {
-    'click button': 'submitForm',
+    'click button': 'newMovie',
     // 'submit form': 'submitForm'
-  },
-  submitForm: function (event) {
-    alert('')
-    event.preventDefault();
   },
   newMovie: function(event){
     event.preventDefault();
@@ -23,12 +19,13 @@ module.exports = Backbone.View.extend({
       title: this.$el.find('input[name="title"]').val(),
       image: this.$el.find('input[name="url"]').val(),
       plot:  this.$el.find('input[name="plot"]').val(),
-      released: this.$el.find('input[name="released"]').val()
+      released: this.$el.find('input[name="released"]').val(),
+      rating: this.$el.find('input[name="rating"]').val()
     };
     console.log(newMovie);
-   var newModel = new MovieModel(newMovie);
+   var newModel = new ItemModel(newMovie);
    this.collection.add(newModel);
-   this.addOne(newModel);
+   this.addOneMovie(newModel);
    newModel.save();
  },
 
@@ -37,13 +34,13 @@ module.exports = Backbone.View.extend({
 
     this.addAllMovies();
   },
-  addOneMovie: function (movieModel) {
-    var movieView = new movieView({model: movieModel});
+  addOneMovie: function (itemModel) {
+    console.log(itemModel);
+    var movieView = new MovieView({model: itemModel});
     this.$el.append(movieView.render().el)
   },
   addAllMovies: function () {
     _.each(this.collection.models, this.addOneMovie, this);
-
   },
 });
 
@@ -51,27 +48,41 @@ module.exports = Backbone.View.extend({
 var Backbone = require('backbone');
 var _ = require('underscore');
 var $ = require('jquery');
-var movieView = require('./imdModelView');
-var movieModel = require('./itemModel');
+var ItemModel = require('./itemModel');
 Backbone.$ = $;
 
-},{"./imdModelView":2,"./itemModel":4,"backbone":6,"jquery":7,"underscore":8}],3:[function(require,module,exports){
+module.exports = Backbone.View.extend({
+  tagName: "article",
+  className: "new-movie",
+  template: _.template($('#movieTmpl').html()),
+  render: function() {
+    var markup = this.template(this.model.toJSON());
+      this.$el.html(markup);
+      return this;
+    },
+    initialize: function(){
+
+    },
+
+  });
+
+},{"./itemModel":4,"backbone":6,"jquery":7,"underscore":8}],3:[function(require,module,exports){
 // this is a bb collection
 var Backbone = require('backbone');
 var _ = require('underscore');
 var ItemModel = require('./itemModel');
 
 
+
 module.exports = Backbone.Collection.extend({
-  url: 'http://tiny-tiny.herokuapp.com/collections/idm',
+  url: 'http://tiny-tiny.herokuapp.com/collections/idmbb',
   model: ItemModel,
 
   initialize: function(){
 
-    console.log(this.url)
 
   },
-  model: ItemModel
+  // model: ItemModel
 });
 
 },{"./itemModel":4,"backbone":6,"underscore":8}],4:[function(require,module,exports){
@@ -81,12 +92,20 @@ var Backbone = require('backbone');
 
 
 module.exports = Backbone.Model.extend({
-  urlRoot: 'http://tiny-tiny.herokuapp.com/collections/idm',
+  urlRoot: 'http://tiny-tiny.herokuapp.com/collections/idmbb',
   idAttribute: '_id',
-  defaults: {
-    task: "Generic Task",
-    isComplete: false
-  },
+  defaults: function () {
+    //its doing something
+    return {
+      title: " ",
+      url: " ",
+      plot: " ",
+      released: " ",
+      rating: " "
+      };
+
+    },
+
   initialize: function () {
 
   }
@@ -97,7 +116,7 @@ module.exports = Backbone.Model.extend({
 var $ = require('jquery');
 var _ = require('underscore');
 var ItemCollection = require('./itemCollection');
-var CollectionView = require('./CollectionView')
+var CollectionView = require('./collectionView')
 var MovieView = require('./imdModelView');
 var ItemModel = require('./itemModel');
 
@@ -106,20 +125,9 @@ $(document).ready(function () {
 
   var movies = new ItemCollection();
   movies.fetch().then(function(){
-    new CollectionView ({collection: movies})
-
+    new CollectionView({collection: movies})
   })
 
-  movies.fetch().then(function(data){
-    console.log('movies here', data);
-    var oneMovie = movies.at(0);
-    var newModelView = new MovieView({model: oneMovie});
-    console.log('ATTRIBUTES OF 0',newModelView.model.attributes);
-
-    console.log('moveies', movies);
-    console.log('ONE MOVIE',oneMovie);
-    console.log(newModelView.render().$el);
-  });
 });
 
   // window.itemCollection = new ItemCollection();
@@ -133,7 +141,7 @@ $(document).ready(function () {
 
 //});
 
-},{"./CollectionView":1,"./imdModelView":2,"./itemCollection":3,"./itemModel":4,"jquery":7,"underscore":8}],6:[function(require,module,exports){
+},{"./collectionView":1,"./imdModelView":2,"./itemCollection":3,"./itemModel":4,"jquery":7,"underscore":8}],6:[function(require,module,exports){
 (function (global){
 //     Backbone.js 1.2.3
 
